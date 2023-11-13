@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="border-b-2 pb-4 text-xl font-bold">Линый кабинет</h1>
+    <h1 class="border-b-2 pb-4 text-xl font-bold ">Рейтинг</h1>
   </div>
 </template>
 

@@ -29,8 +29,9 @@
                   v-for="item in navigation"
                   :key="item.name"
                   :to="item.href"
+                  @click="addClass"
                   :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']"
-                  :aria-current="item.current ? 'page' : undefined"
+                  :aria-current="item.current ? 'page' : ''"
                 >{{ item.name }}</NuxtLink>
               </div>
             </div>
@@ -94,6 +95,8 @@
             </div>
           </div>
           <div class="-mr-2 flex md:hidden">
+
+            <!-- Адаптив -->
             <!-- Mobile menu button -->
             <DisclosureButton
               class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -115,6 +118,7 @@
         </div>
       </div>
 
+      <!-- Адаптив -->
       <DisclosurePanel class="md:hidden">
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
           <DisclosureButton
@@ -164,11 +168,7 @@
       </DisclosurePanel>
     </Disclosure>
 
-    <header class="bg-white shadow">
-      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900">Личный кабинет</h1>
-      </div>
-    </header>
+
     <main>
       <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <!-- Your content -->
@@ -190,13 +190,14 @@ const user = {
 }
 const navigation = [
   { name: 'Личный кабинет', href: '/profile', current: true },
-  { name: 'Задания', href: '#', current: false },
+  { name: 'Задания', href: '/profile/tasks', current: false },
   { name: 'Проекты', href: '/profile/projects', current: false },
-  { name: 'Достижения', href: '#', current: false },
-  { name: 'Рейтинг', href: '#', current: false },
+  { name: 'Достижения', href: '/profile/achievements', current: false },
+  { name: 'Рейтинг', href: '/profile/rating', current: false },
 ]
 const userNavigation = [
-  { name: 'Настройки', href: '#' },
+  { name: 'Настройки', href: '/profile/setings' },
   { name: 'Выйти', href: '/' },
 ]
+
 </script>
