@@ -41,6 +41,7 @@
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
+            @submit.prevent="goToPerson"
             class="space-y-6"
             action="#"
             method="POST"
@@ -89,15 +90,15 @@
 
             <div>
 
-              <NuxtLink to="/profile">
-                <button
-                  type="submit"
-                  class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Войти
 
-                </button>
-              </NuxtLink>
+              <button
+                type="submit"
+                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Войти
+
+              </button>
+
             </div>
           </form>
         </div>
@@ -109,6 +110,15 @@
 <script setup>
 import { useModalStore } from '../stores/ModalStore'
 const modalStore = useModalStore()
+
+const router = useRouter()
+const id = 1;
+function goToPerson() {
+  modalStore.isVisibleModal = false
+  const body = document.querySelector('body');
+  body.style.overflow = '';
+  router.push(`/profile/${id}`)
+}
 
 function closeModal() {
   modalStore.isVisibleModal = false
