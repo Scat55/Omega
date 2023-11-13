@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.0.6",
     "@nuxt/devtools": "latest",
     "autoprefixer": "^10.4.16",
+    "element-plus": "^2.4.2",
     "nuxt": "^3.8.1",
     "postcss": "^8.4.31",
     "sass": "^1.69.5",
