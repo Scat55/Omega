@@ -69,12 +69,6 @@
                   for="password"
                   class="block text-sm font-medium leading-6 text-white"
                 >Пароль</label>
-                <div class="text-sm">
-                  <a
-                    href="#"
-                    class="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >Забыли пароль?</a>
-                </div>
               </div>
               <div class="mt-2">
                 <input
@@ -87,18 +81,19 @@
                 />
               </div>
             </div>
-
             <div>
-
-
               <button
                 type="submit"
                 class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Войти
-
               </button>
-
+              <div class="text-sm">
+                <a
+                  href="#"
+                  class="font-semibold text-indigo-600 hover:text-indigo-500"
+                >Нет аккаунта? Регистрация</a>
+              </div>
             </div>
           </form>
         </div>
