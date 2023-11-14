@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import express from 'express';
 const { json } = express;
 import db from '../config/db.js';
-import { secret } from '../config/config.js';
+import secret from '../config/config.js';
 import session from 'express-session';
 
 

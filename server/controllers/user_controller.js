@@ -1,207 +1,211 @@
-// const db = require('../config/db');
-// const {validationResult} = require("express-validator");
-// const {json} = require("express");
-// const jwt = require("jsonwebtoken");
-// const fs = require('fs');
-// const multer = require('multer');
-// const {randomUUID} = require("crypto");
-// //const { upload } = require('../multer/multerConfig');
-// const store = require('../../../OmegaSchool/newBack/store.js')
-// const {resolve, join} = require("path");
-// const archiver = require('archiver');
-// const {fsync} = require("fs");
-// const { v4: uuidv4 } = require('uuid');
-//
-// class User_controller {
-//
-//     async getUserList(req, res) {
-//         try {
-//             const query = 'SELECT * FROM users';
-//
-//             // Выполняем асинхронный SQL-запрос для получения пользователей
-//             const users = await db.query(query);
-//
-//             // Отправляем список пользователей в ответе
-//             res.json(users.rows);
-//         } catch (error) {
-//             console.error('Ошибка при выполнении SQL-запроса:', error);
-//             res.status(500).json({error: 'Ошибка на сервере'});
-//         }
-//     }
-//
-//     async additionalData(req, res) {
-//         try {
-//             const user_id = req.user_id
-//             // Извлекаем данные из тела запроса
-//             const {first_name, last_name, patronymic, birthdate, classes, item} = req.body;
-//             console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
-//             // Создаем SQL-запрос для обновления данных пользователя в таблице users
-//             const sql = `UPDATE users
-//                    SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
-//                    WHERE user_id = $7`;
-//
-//             // Используем асинхронный метод для выполнения SQL-запроса
-//             await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
-//
-//             console.log('Дополнительные данные успешно обновлены');
-//             res.status(200).json({message: 'Дополнительные данные успешно обновлены'});
-//         } catch (error) {
-//             console.error('Ошибка при обновлении данных:', error);
-//             res.status(500).json({message: 'Произошла ошибка при обновлении данных'});
-//         }
-//     }
-//
-//     async getUserInformation(req, res) {
-//
-//         const user_id = req.params.user_id;
-//         try {
-//             // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
-//             const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
-//                 db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
-//                 db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
-//                 db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
-//                 db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
-//             ]);
-//
-//             // Извлекаем результаты из объектов результата
-//             const user = userResult.rows[0];
-//             const grades = gradesResult.rows;
-//             const achievements = achievementsResult.rows;
-//             const grades_teacher = achievements_teacherResult.rows;
-//
-//             if (!user) {
-//                 console.log(`Пользователь с ID ${user_id} не найден`);
-//                 return res.status(404).json({message: 'Пользователь не найден'});
-//             }
-//
-//             // Соберите результаты в один объект
-//             const userData = {
-//                 user,
-//                 grades,
-//                 achievements,
-//                 grades_teacher,
-//             };
-//
-//             console.log(`Данные для пользователя с ID ${user_id} найдены`);
-//             res.json(userData);
-//         } catch (error) {
-//             console.error('Ошибка при выполнении SQL-запросов:', error.message);
-//             res.status(500).json({error: 'Ошибка на сервере'});
-//         }
-//     }
-//
-//     async getTypeOfUser(req, res) {
-//         const sql = 'SELECT DISTINCT type_user FROM users'; // Запрос на получение уникальных типов пользователей
-//
-//         try {
-//             const result = await db.query(sql); // Выполнение запроса без параметров
-//             const typesUser = result.rows.map(row => row.type_user);
-//             res.json({ typesUser });
-//         } catch (error) {
-//             console.error('Ошибка при выполнении SQL-запроса:', error.message);
-//             res.status(500).json({ error: 'Ошибка на сервере' });
-//         }
-//     }
-//
-//     async CreateComandos(req, res) {
-//         try {
-//             const { comandName, password, userLogins } = req.body;
-//
-//             // Вставка команды
-//             const insertComandoText = 'INSERT INTO comandos (comand_name, password) VALUES ($1, $2) RETURNING comand_id;';
-//             const comandoResult = await db.query(insertComandoText, [comandName, password]);
-//             const comandId = comandoResult.rows[0].comand_id;
-//
-//             for (const email of userLogins) {
-//                 let userId;
-//
-//                 // Проверяем наличие email в таблице users
-//                 const res = await db.query('SELECT user_id FROM users WHERE email = $1', [email]);
-//                 if (res.rows.length > 0) {
-//                     // Email найден, используем существующий user_id
-//                     userId = res.rows[0].user_id;
-//                 } else {
-//                     // Email не найден, генерируем новый UUID
-//                     userId = uuidv4(); // Функция для генерации UUID
-//                 }
-//
-//                 // Вставляем данные в user_command
-//                 const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
-//                 await db.query(insertUserCommandText, [comandId, userId]);
-//             }
-//
-//             res.status(201).json({ comandId: comandId });
-//         } catch (error) {
-//             console.error(error);
-//             res.status(500).json({ error: error.message });
-//         }
-//     }
-//
-//
-//     async getUserIDForEmail(req, res) {
-//         // Извлекаем адрес электронной почты из параметров запроса
-//         const email = req.params.email;
-//
-//         // SQL-запрос для получения user_id по адресу электронной почты
-//         const sql = 'SELECT user_id FROM users WHERE email = $1';
-//
-//         try {
-//             // Выполняем SQL-запрос и ожидаем результат с использованием async/await
-//             const {rows} = await db.query(sql, [email]);
-//
-//             if (rows.length > 0) {
-//                 // Если есть результаты запроса, извлекаем user_id
-//                 const user_id = rows[0].user_id;
-//                 console.log(`User ID для пользователя с email ${email} найден: ${user_id}`);
-//                 // Отправляем user_id в формате JSON
-//                 res.json({user_id});
-//             } else {
-//                 // Если результаты запроса пусты, отправляем сообщение об ошибке
-//                 console.log(`User ID для пользователя с email ${email} не найден`);
-//                 res.status(404).json({message: 'User ID не найден'});
-//             }
-//         } catch (error) {
-//             // Обрабатываем ошибку выполнения SQL-запроса
-//             console.error('Ошибка при выполнении SQL-запроса:', error.message);
-//             res.status(500).json({error: 'Ошибка на сервере'});
-//         }
-//     }
-//
-//     async getUserDataForEmail(req, res) {
-//         const email = req.params.email; // Получите email из параметров запроса.
-//
-//         try {
-//
-//
-//             const [userResult, achievementsResult, gradesResult, achievements_teacherResult] = await Promise.all([
-//                 db.query('SELECT * FROM users WHERE email = $1', [email]),
-//                 db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-//                 db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
-//                 db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
-//             ]);
-//
-//             // Извлекаем результаты из объектов результата
-//             const user = userResult.rows[0];
-//             const grades = gradesResult.rows;
-//             const achievements = achievementsResult.rows;
-//             const grades_teacher = achievements_teacherResult.rows;
-//
-//
-//             // Соберите результаты в один объект
-//             const userData = {
-//                 user,
-//                 achievements,
-//                 grades,
-//                 grades_teacher,
-//             };
-//
-//             console.log(`Данные для пользователя с Email ${email} найдены`);
-//             res.json(userData);
-//         } catch (error) {
-//             console.error('Ошибка при выполнении SQL-запросов:', error.message);
-//             res.status(500).json({error: 'Ошибка на сервере'});
-//         }
-//     }
+import db from '../config/db.js';
+import { validationResult } from 'express-validator';
+import express from 'express';
+const { json } = express;
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import multer from 'multer';
+import { randomUUID } from 'crypto';
+// Если у вас есть конфигурация multer, нужно будет также экспортировать upload в соответствующем файле
+// import { upload } from '../multer/multerConfig.js';
+import store from '../../../OmegaSchool/newBack/store.js';
+import path from 'path';
+const { resolve, join } = path;
+import archiver from 'archiver';
+// fsync уже часть модуля fs, который импортирован выше
+import { v4 as uuidv4 } from 'uuid';
+
+
+class User_controller {
+
+    async getUserList(req, res) {
+        try {
+            const query = 'SELECT * FROM users';
+
+            // Выполняем асинхронный SQL-запрос для получения пользователей
+            const users = await db.query(query);
+
+            // Отправляем список пользователей в ответе
+            res.json(users.rows);
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
+
+    async additionalData(req, res) {
+        try {
+            const user_id = req.user_id
+            // Извлекаем данные из тела запроса
+            const {first_name, last_name, patronymic, birthdate, classes, item} = req.body;
+            console.log(user_id, first_name, last_name, patronymic, birthdate, classes, item)
+            // Создаем SQL-запрос для обновления данных пользователя в таблице users
+            const sql = `UPDATE users
+                   SET first_name = $1, last_name = $2, patronymic = $3, birthdate = $4, classes = $5, item = $6
+                   WHERE user_id = $7`;
+
+            // Используем асинхронный метод для выполнения SQL-запроса
+            await db.query(sql, [first_name, last_name, patronymic, birthdate, classes, item, user_id]);
+
+            console.log('Дополнительные данные успешно обновлены');
+            res.status(200).json({message: 'Дополнительные данные успешно обновлены'});
+        } catch (error) {
+            console.error('Ошибка при обновлении данных:', error);
+            res.status(500).json({message: 'Произошла ошибка при обновлении данных'});
+        }
+    }
+
+    async getUserInformation(req, res) {
+
+        const user_id = req.params.user_id;
+        try {
+            // Асинхронные SQL-запросы для получения данных пользователя, оценок и достижений
+            const [userResult, gradesResult, achievementsResult, achievements_teacherResult] = await Promise.all([
+                db.query('SELECT * FROM users WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM student_grades WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM achievements WHERE user_id = $1', [user_id]),
+                db.query('SELECT * FROM teacher_grades WHERE user_id = $1', [user_id])
+            ]);
+
+            // Извлекаем результаты из объектов результата
+            const user = userResult.rows[0];
+            const grades = gradesResult.rows;
+            const achievements = achievementsResult.rows;
+            const grades_teacher = achievements_teacherResult.rows;
+
+            if (!user) {
+                console.log(`Пользователь с ID ${user_id} не найден`);
+                return res.status(404).json({message: 'Пользователь не найден'});
+            }
+
+            // Соберите результаты в один объект
+            const userData = {
+                user,
+                grades,
+                achievements,
+                grades_teacher,
+            };
+
+            console.log(`Данные для пользователя с ID ${user_id} найдены`);
+            res.json(userData);
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запросов:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
+
+    async getTypeOfUser(req, res) {
+        const sql = 'SELECT DISTINCT type_user FROM users'; // Запрос на получение уникальных типов пользователей
+
+        try {
+            const result = await db.query(sql); // Выполнение запроса без параметров
+            const typesUser = result.rows.map(row => row.type_user);
+            res.json({ typesUser });
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({ error: 'Ошибка на сервере' });
+        }
+    }
+
+    async CreateComandos(req, res) {
+        try {
+            const { comandName, password, userLogins } = req.body;
+
+            // Вставка команды
+            const insertComandoText = 'INSERT INTO comandos (comand_name, password) VALUES ($1, $2) RETURNING comand_id;';
+            const comandoResult = await db.query(insertComandoText, [comandName, password]);
+            const comandId = comandoResult.rows[0].comand_id;
+
+            for (const email of userLogins) {
+                let userId;
+
+                // Проверяем наличие email в таблице users
+                const res = await db.query('SELECT user_id FROM users WHERE email = $1', [email]);
+                if (res.rows.length > 0) {
+                    // Email найден, используем существующий user_id
+                    userId = res.rows[0].user_id;
+                } else {
+                    // Email не найден, генерируем новый UUID
+                    userId = uuidv4(); // Функция для генерации UUID
+                }
+
+                // Вставляем данные в user_command
+                const insertUserCommandText = 'INSERT INTO user_command (comand_id, user_id) VALUES ($1, $2)';
+                await db.query(insertUserCommandText, [comandId, userId]);
+            }
+
+            res.status(201).json({ comandId: comandId });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+
+    async getUserIDForEmail(req, res) {
+        // Извлекаем адрес электронной почты из параметров запроса
+        const email = req.params.email;
+
+        // SQL-запрос для получения user_id по адресу электронной почты
+        const sql = 'SELECT user_id FROM users WHERE email = $1';
+
+        try {
+            // Выполняем SQL-запрос и ожидаем результат с использованием async/await
+            const {rows} = await db.query(sql, [email]);
+
+            if (rows.length > 0) {
+                // Если есть результаты запроса, извлекаем user_id
+                const user_id = rows[0].user_id;
+                console.log(`User ID для пользователя с email ${email} найден: ${user_id}`);
+                // Отправляем user_id в формате JSON
+                res.json({user_id});
+            } else {
+                // Если результаты запроса пусты, отправляем сообщение об ошибке
+                console.log(`User ID для пользователя с email ${email} не найден`);
+                res.status(404).json({message: 'User ID не найден'});
+            }
+        } catch (error) {
+            // Обрабатываем ошибку выполнения SQL-запроса
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
+
+    async getUserDataForEmail(req, res) {
+        const email = req.params.email; // Получите email из параметров запроса.
+
+        try {
+
+
+            const [userResult, achievementsResult, gradesResult, achievements_teacherResult] = await Promise.all([
+                db.query('SELECT * FROM users WHERE email = $1', [email]),
+                db.query('SELECT * FROM achievements WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM student_grades WHERE email = (SELECT user_id FROM users WHERE email = $1)', [email]),
+                db.query('SELECT * FROM teacher_grades WHERE email = $1', [user_id])
+            ]);
+
+            // Извлекаем результаты из объектов результата
+            const user = userResult.rows[0];
+            const grades = gradesResult.rows;
+            const achievements = achievementsResult.rows;
+            const grades_teacher = achievements_teacherResult.rows;
+
+
+            // Соберите результаты в один объект
+            const userData = {
+                user,
+                achievements,
+                grades,
+                grades_teacher,
+            };
+
+            console.log(`Данные для пользователя с Email ${email} найдены`);
+            res.json(userData);
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запросов:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
 //
 //   //   async add_level_1_test(req, res) {
 //   //
@@ -273,63 +277,63 @@
 //   //               res.status(500).json({error: 'Ошибка на сервере'});
 //   //           });
 //   //   };
-//
-//     async getTasksForExpert(req, res) {
-//         try {
-//             const user_id = req.user_id;
-//
-//             // Запрос для level_1_tests
-//             const level1TestsSql = `
-//             SELECT *
-//             FROM level_1_tests
-//             WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
-//         `;
-//
-//             // Запрос для level_2_tests
-//             const level2TestsSql = `
-//             SELECT *
-//             FROM level_2_tests
-//             WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
-//         `;
-//
-//             // Запрос для level_3_tests
-//             const level3TestsSql = `
-//             SELECT *
-//             FROM level_3_tests
-//             WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
-//         `;
-//
-//             // Выполнение запросов для каждого уровня
-//             const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
-//             const level2OptionsResult = await db.query(level2TestsSql, [user_id]);
-//             const level3OptionsResult = await db.query(level3TestsSql, [user_id]);
-//
-//             // Формирование ответа
-//             const formattedResponse = [
-//                 ...level1OptionsResult.rows.map(test => ({
-//                     task_id: test.test_id,
-//                     task_test: test.task_test,
-//                     level: 1
-//                 })),
-//                 ...level2OptionsResult.rows.map(test => ({
-//                     task_id: test.test_id,
-//                     task_test: test.task_test,
-//                     level: 2
-//                 })),
-//                 ...level3OptionsResult.rows.map(test => ({
-//                     task_id: test.test_id,
-//                     task_test: test.task_test,
-//                     level: 3
-//                 }))
-//             ];
-//
-//             res.json(formattedResponse);
-//
-//         } catch (error) {
-//             console.error('Ошибка при выполнении SQL-запроса:', error.message);
-//             res.status(500).json({error: 'Ошибка на сервере'});
-//         }
-//     }
+
+    async getTasksForExpert(req, res) {
+        try {
+            const user_id = req.user_id;
+
+            // Запрос для level_1_tests
+            const level1TestsSql = `
+            SELECT *
+            FROM level_1_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
+
+            // Запрос для level_2_tests
+            const level2TestsSql = `
+            SELECT *
+            FROM level_2_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
+
+            // Запрос для level_3_tests
+            const level3TestsSql = `
+            SELECT *
+            FROM level_3_tests
+            WHERE (ver_1_id IS NULL OR ver_1_id != $1) AND (ver_2_id IS NULL OR ver_2_id != $1) and (user_id != $1);
+        `;
+
+            // Выполнение запросов для каждого уровня
+            const level1OptionsResult = await db.query(level1TestsSql, [user_id]);
+            const level2OptionsResult = await db.query(level2TestsSql, [user_id]);
+            const level3OptionsResult = await db.query(level3TestsSql, [user_id]);
+
+            // Формирование ответа
+            const formattedResponse = [
+                ...level1OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 1
+                })),
+                ...level2OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 2
+                })),
+                ...level3OptionsResult.rows.map(test => ({
+                    task_id: test.test_id,
+                    task_test: test.task_test,
+                    level: 3
+                }))
+            ];
+
+            res.json(formattedResponse);
+
+        } catch (error) {
+            console.error('Ошибка при выполнении SQL-запроса:', error.message);
+            res.status(500).json({error: 'Ошибка на сервере'});
+        }
+    }
 //
 //     async getTasksForStudent(req, res) {
 //         try {
@@ -1359,16 +1363,6 @@
 //         } catch (error) { return res.status(500).send({message: 'Ошибка сервера'}); }
 //     }
 //
-// }
-//
-// module.exports = new User_controller()
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+}
+
+export default new User_controller()

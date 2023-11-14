@@ -1,8 +1,8 @@
 import express from "express";
 import cors from 'cors';
 const app = express();
-import { secret } from './config/config.js';
-//import userRouter from './routes/user.routes.js';
+import secret from './config/config.js';
+import userRouter from './routes/user.routes.js';
 import authRouter from './routes/auth.routes.js';
 
 import session from "express-session";
@@ -23,7 +23,7 @@ app.use(session({
   cookie: { secure: 'auto' } // Используйте 'auto' или false во время разработки, true в продакшне
 }));
 
-//app.use('/api', userRouter)
+app.use('/api', userRouter)
 app.use('/auth', authRouter)
 
 const PORT = process.env.PORT || 3001;

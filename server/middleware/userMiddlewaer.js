@@ -1,22 +1,27 @@
-const jwt = require('jsonwebtoken');
-const { secret } = require('../config');
+import jwt from 'jsonwebtoken';
+import secret from '../config/config.js'; // Предполагается, что файл конфигурации экспортирует переменную `secret`
 
-module.exports = function (req, res, next) {
-    if (req.method === "OPTIONS") {
-        next();
-    }
-    try {
-        const token = req.headers.authorization.split(' ')[1];
-        if (!token) {
-            console.log(e);
-            return res.status(403).json({ message: "Пользователь не авторизован" });
+class User {
+    authMiddleware = (req, res, next) => {
+        if (req.method === "OPTIONS") {
+            return next();
         }
-        const decodedData = jwt.verify(token, secret);
-        req.user = decodedData;
 
-        next();
-    } catch (e) {
-        console.log(e);
-        return res.status(403).json({ message: "Пользователь не авторизован" });
-    }
-};
+        try {
+            const authHeader = req.headers.authorization;
+            if (!authHeader) {
+                return res.status(403).json({message: "Пользователь не авторизован"});
+            }
+
+            const token = authHeader.split(' ')[1];
+            req.user = jwt.verify(token, secret);
+
+            next();
+        } catch (e) {
+            console.log(e);
+            return res.status(403).json({message: "Пользователь не авторизован"});
+        }
+    };
+}
+
+export default new User

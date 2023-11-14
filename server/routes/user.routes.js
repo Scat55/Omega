@@ -1,24 +1,24 @@
-// import express from 'express';
-// const router = express.Router();
-//
+import express from 'express';
+const router = express.Router();
+
 // import store from '../../../OmegaSchool/newBack/store.js';
 // import mail from '../../../OmegaSchool/newBack/mail.js';
-//
-// import userController from "../controllers/user_controller.js";
-// import userMiddleware from '../middleware/userMiddlewaer.js';
-// import roleMiddleware from '../middleware/roleMiddlewaer.js';
-//
-//
-// router.get('/user_list', userController.getUserList)
-// router.get('/user_id/:email', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.getUserIDForEmail)
-// router.get('/user_inf_email/:email', userMiddleware, userController.getUserDataForEmail)
-// router.get('/user_inf/:user_id', userMiddleware, userController.getUserInformation)
-// router.post('/addition_data', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.additionalData)
-// //router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
-// router.get('/getTestForExpert', roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
-// router.get('/getTypeOfUser', userController.getTypeOfUser)
-// router.post('/CreateComandos', userController.CreateComandos);
-//
+
+import userController from "../controllers/user_controller.js";
+import User from '../middleware/userMiddlewaer.js';
+import Role from '../middleware/roleMiddlewaer.js';
+
+
+router.get('/user_list', userController.getUserList)
+router.get('/user_id/:email', Role.roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.getUserIDForEmail)
+router.get('/user_inf_email/:email', User.authMiddleware, userController.getUserDataForEmail)
+router.get('/user_inf/:user_id', User.authMiddleware, userController.getUserInformation)
+router.post('/addition_data', Role.roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.additionalData)
+//router.post('/add_level_1_test',roleMiddleware(['Учитель','Эксперт']) ,userController.add_level_1_test)
+router.get('/getTestForExpert', Role.roleMiddleware(['Учитель', 'Эксперт']), userController.getTasksForExpert)
+router.get('/getTypeOfUser', userController.getTypeOfUser)
+router.post('/CreateComandos', userController.CreateComandos);
+
 //
 // router.get('/getTasksForStudent', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksForStudent)
 // router.get('/getTasksForStudent/:testID', roleMiddleware(['Ученик', 'Учитель', 'Эксперт']), userController.getTasksByID)
@@ -50,7 +50,7 @@
 // //маршруты для работы с файлами
 // //маршрут для ручной загрузки файла или файлов получения файла.
 // router.post('/uploads/', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.uploads)
-// router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:subject/:options', roleMiddleware(['Учитель', 'Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
+// --router.post('/add_level_1_test_with_files/:task_test/:task_description/:classes/:subject/:options', roleMiddleware(['Учитель', 'Эксперт']), store.upload.array('files'), userController.addTestAndUpload)
 // router.post('/add_level_1/:task_test_coded/:task_description_coded/:classes/:subject/:options', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTestAndUpload)
 //
 // router.post('/add_level_2/:task_test_coded/:task_description_coded/:task_hint/:task_answer/:classes/:subject', roleMiddleware(['Учитель', 'Эксперт']), store.upload.any(), userController.addTest2AndUpload)
@@ -58,8 +58,8 @@
 //
 // //Маршрут для получения файла или файлов.
 // //Поиск всех файлов, загруженных пользователем
-// router.get('/list_all_files', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.listUserFiles);
-// router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.deleteUserFiles);
+// --router.get('/list_all_files', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.listUserFiles);
+// --router.post('/delete_user_files/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.deleteUserFiles);
 // router.get('/download/:file_names', roleMiddleware(['Ученик', 'Эксперт', 'Учитель']), userController.download);
 //
 // router.get('/verify_email/:email/', async (req, res) => {
@@ -111,4 +111,4 @@
 //   res.send('Аккаунт активирован');
 // })
 //
-// export default router;
+export default router;
