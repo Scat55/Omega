@@ -58,6 +58,7 @@
                   type="email"
                   autocomplete="email"
                   required=""
+                  v-model="email"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-4"
                 />
               </div>
@@ -77,6 +78,7 @@
                   type="password"
                   autocomplete="current-password"
                   required=""
+                  v-model="pass"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-4 text-lg"
                 />
               </div>
@@ -85,8 +87,9 @@
               <div>
                 <el-select
                   v-model="value"
-                  placeholder="Ученик"
+                  placeholder="Статус"
                   class="mb-8"
+                  effect="dark"
                 >
                   <el-option
                     v-for="item in options"
@@ -102,6 +105,7 @@
                   v-model="value2"
                   placeholder="Пол"
                   class="mb-8"
+                  effect="dark"
                 >
                   <el-option
                     v-for="item in options2"
@@ -138,8 +142,9 @@ import { useModalStore } from '../stores/ModalStore'
 const modalStore = useModalStore()
 
 const router = useRouter()
-const id = 1;
-
+const id = ref(1);
+const email = ref('')
+const pass = ref('')
 const value = ref('')
 const value2 = ref('')
 
@@ -166,10 +171,21 @@ const options2 = [
   }]
 
 function goToPerson() {
-  modalStore.isVisibleReg = false
-  const body = document.querySelector('body');
-  body.style.overflow = '';
-  router.push(`/profile/${id}`)
+  // modalStore.isVisibleReg = false
+  // const body = document.querySelector('body');
+  // body.style.overflow = '';
+  // router.push(`/profile/${id.value}`)
+  if (value.value === '') {
+    alert('Выберите статус')
+  }
+  if (value2.value === '') {
+    alert('Выберите пол')
+  }
+  else {
+    console.log(email.value, pass.value, value.value, value2.value)
+    email.value = pass.value = value.value = value2.value = ''
+  }
+
 }
 
 function closeModal() {
