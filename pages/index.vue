@@ -1,5 +1,6 @@
 <template>
   <authForm v-if="modalStore.isVisibleModal" />
+  <regForm v-if="modalStore.isVisibleReg" />
   <section
     id="aboutUs"
     class="bag"
