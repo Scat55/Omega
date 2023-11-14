@@ -138,8 +138,10 @@
 
 <script setup>
 import { useModalStore } from '../stores/ModalStore'
+import { useUrlStore } from '../stores/UrlStore'
 
 const modalStore = useModalStore()
+const url = useUrlStore()
 
 const router = useRouter()
 const id = ref(1);
@@ -182,8 +184,20 @@ function goToPerson() {
     alert('Выберите пол')
   }
   else {
-    console.log(email.value, pass.value, value.value, value2.value)
-    email.value = pass.value = value.value = value2.value = ''
+
+    const { data } = useFetch(`${url.url}auth/registration`, {
+      method: 'post',
+      body: {
+        email: email.value,
+        password: pass.value,
+        gender: value2.value,
+        type_user: value.value
+      }
+    })
+
+    // console.log(url.url)
+    // console.log(email.value, pass.value, value.value, value2.value)
+    // email.value = pass.value = value.value = value2.value = ''
   }
 
 }
