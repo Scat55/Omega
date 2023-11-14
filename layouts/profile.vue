@@ -191,10 +191,10 @@ const { id } = useRoute().params
 let token
 if (typeof window !== 'undefined') {
   token = typeof window !== 'undefined' ? localStorage.getItem('save') : null;
-
 }
 console.log(token)
-
+const { data } = await useFetch('http://localhost:3001/test')
+console.log(data)
 const navigation = [
   { name: 'Личный кабинет', href: `/profile/${token}`, current: true },
   { name: 'Задания', href: '/profile/tasks', current: false },
