@@ -112,10 +112,12 @@
               >Company</a> -->
             </div>
             <div class="py-6">
-              <a
-                href="#"
-                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-              >Войти</a>
+              <P
+                @click="showModalRegAdaptiv"
+                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
+              >Войти</p>
+
+
             </div>
           </div>
         </div>
@@ -141,7 +143,19 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 
+// Отображение формы входа
 function showModalReg() {
+  modalStore.isVisibleModal = true
+  if (modalStore.isVisibleModal == true) {
+    const body = document.querySelector('body');
+    window.scrollTo(0, 0);
+    body.style.overflow = 'hidden';
+  }
+}
+
+// Отображение формы входа при адаптиве
+function showModalRegAdaptiv() {
+  mobileMenuOpen.value = false
   modalStore.isVisibleModal = true
   if (modalStore.isVisibleModal == true) {
     const body = document.querySelector('body');
