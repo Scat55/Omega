@@ -24,7 +24,7 @@
   <div class="bg">
     <div class="modal">
 
-      <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 ">
         <p
           class="text-white close"
           @click="closeModal"
@@ -35,7 +35,7 @@
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
-          <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">Регистрация
+          <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">Войдите в свой аккаунт
           </h2>
         </div>
 
@@ -50,7 +50,7 @@
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-white"
-              >Email </label>
+              >Email address</label>
               <div class="mt-2">
                 <input
                   id="email"
@@ -81,49 +81,20 @@
                 />
               </div>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <el-select
-                  v-model="value"
-                  placeholder="Ученик"
-                  class="mb-8"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                    :disabled="item.disabled"
-                  />
-                </el-select>
+            <div>
+              <button
+                type="submit"
+                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Войти
+              </button>
+              <div class="text-sm">
+                <a
+                  href="#"
+                  class="font-semibold text-indigo-600 hover:text-indigo-500"
+                  @click="closeAuthAndOpenReg"
+                >Нет аккаунта? Регистрация</a>
               </div>
-              <div>
-                <el-select
-                  v-model="value2"
-                  placeholder="Пол"
-                  class="mb-8"
-                >
-                  <el-option
-                    v-for="item in options2"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                    :disabled="item.disabled"
-                  />
-                </el-select>
-              </div>
-            </div>
-            <button
-              type="submit"
-              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Войти
-            </button>
-            <div class="text-sm">
-              <a
-                href="#"
-                class="font-semibold text-indigo-600 hover:text-indigo-500"
-              >Регистрация команды</a>
             </div>
           </form>
         </div>
@@ -134,48 +105,26 @@
 
 <script setup>
 import { useModalStore } from '../stores/ModalStore'
-
 const modalStore = useModalStore()
 
 const router = useRouter()
 const id = 1;
-
-const value = ref('')
-const value2 = ref('')
-
-const options = [
-  {
-    value: 'Ученик',
-    label: 'Ученик',
-  },
-  {
-    value: 'Учитель',
-    label: 'Учитель',
-    disabled: false,
-  }]
-
-const options2 = [
-  {
-    value: 'Мужской',
-    label: 'Мужской',
-  },
-  {
-    value: 'Женский',
-    label: 'Женский',
-    disabled: false,
-  }]
-
 function goToPerson() {
-  modalStore.isVisibleReg = false
+  modalStore.isVisibleModal = false
   const body = document.querySelector('body');
   body.style.overflow = '';
   router.push(`/profile/${id}`)
 }
 
 function closeModal() {
-  modalStore.isVisibleReg = false
+  modalStore.isVisibleModal = false
   const body = document.querySelector('body');
   body.style.overflow = '';
+}
+
+function closeAuthAndOpenReg() {
+  modalStore.isVisibleModal = false
+  modalStore.isVisibleReg = true
 }
 </script>
 <style lang="scss" scoped>
