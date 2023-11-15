@@ -114,6 +114,9 @@ function goToPerson() {
   }).then(res => {
     let token = ref(res.data.value.token)
 
+    if (typeof window !== 'undefined') {
+      let localSt = typeof window !== 'undefined' ? localStorage.setItem('userToken', token.value) : null;
+    }
     useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
       method: 'get',
       headers: {
@@ -125,7 +128,7 @@ function goToPerson() {
       console.log(res.data.value.user_id)
       const userId = res.data.value.user_id
       if (typeof window !== 'undefined') {
-        let token = typeof window !== 'undefined' ? localStorage.setItem('userID', userId) : null;
+        let localSt = typeof window !== 'undefined' ? localStorage.setItem('userID', userId) : null;
       }
       router.push(`profile/${res.data.value.user_id}`)
       router.push(`profile/${userId}`)

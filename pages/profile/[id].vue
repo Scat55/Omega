@@ -1,16 +1,33 @@
 <template>
   <div class="profile">
     <div class="container">
-      <h1 class=" border-b-2 pb-4 text-xl font-bold">Линый кабинет + {{ id }}</h1>
+      <h1 class=" border-b-2 pb-4 text-xl font-bold">Линый кабинет </h1>
 
-      <ProfileDetail />
+      <ProfileDetail :user="user" />
+
     </div>
   </div>
 </template>
 
 <script setup>
 
-const { id } = useRoute().params
+
+let userID;
+let token;
+if (typeof window !== 'undefined') {
+  userID = typeof window !== 'undefined' ? localStorage.getItem('userID') : null;
+}
+if (typeof window !== 'undefined') {
+  token = typeof window !== 'undefined' ? localStorage.getItem('userToken') : null;
+}
+
+const { data: user } = await useFetch(`http://localhost:8070/api/user_inf/${userID}`, {
+  method: 'get',
+  headers: {
+    Authorization: `Bearer  ${token}`,
+    'Content-Type': 'application/json',
+  }
+})
 
 
 
