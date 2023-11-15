@@ -176,10 +176,16 @@ function goToPerson() {
         gender: value2.value,
         type_user: value.value
       }
+    }).then(res => {
+      console.log(res.data.value.user_id)
+      if (typeof window !== 'undefined') {
+        let token = typeof window !== 'undefined' ? localStorage.setItem('userID', res.data.value.user_id) : null;
+      }
+      router.push(`profile/${res.data.value.user_id}`)
     })
-    email.value = pass.value = value.value = value2.value = ''
-    modalStore.isVisibleReg = false
-    modalStore.isVisibleModal = true
+    // email.value = pass.value = value.value = value2.value = ''
+    // modalStore.isVisibleReg = false
+    // modalStore.isVisibleModal = true
   }
 
 }

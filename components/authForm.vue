@@ -39,6 +39,7 @@
                   type="email"
                   autocomplete="email"
                   required=""
+                  v-model="email"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-4"
                 />
               </div>
@@ -58,6 +59,7 @@
                   type="password"
                   autocomplete="current-password"
                   required=""
+                  v-model="pass"
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-4 text-lg"
                 />
               </div>
@@ -86,15 +88,46 @@
 
 <script setup>
 import { useModalStore } from '../stores/ModalStore'
+import { ref } from 'vue'
 const modalStore = useModalStore()
 
 const router = useRouter()
-const id = 1;
+
+
+const email = ref('')
+const pass = ref('')
 function goToPerson() {
-  modalStore.isVisibleModal = false
-  const body = document.querySelector('body');
-  body.style.overflow = '';
-  router.push(`/profile/${id}`)
+  // modalStore.isVisibleModal = false
+  // const body = document.querySelector('body');
+  // body.style.overflow = '';
+  // router.push(`/profile/${id}`)
+
+  // const { data } = useFetch(`http://localhost:8070/auth/login`, {
+  //   method: 'post',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: {
+  //     email: email.value,
+  //     password: pass.value,
+  //   }
+  // }).then(res => {
+  //   const token = ref(res.data.value.token)
+
+  //   useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
+  //     method: 'get',
+  //     headers: {
+  //       Authorization: `Bearer ${token.value}`,
+  //       'Content-Type': 'application/json',
+  //     }
+  //   }).then(res => {
+  //     console.log(res.data)
+
+  //   })
+  // })
+  // email.value = pass.value = ''
+  // modalStore.isVisibleModal = false
+
 }
 
 function closeModal() {
