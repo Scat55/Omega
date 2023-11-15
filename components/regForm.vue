@@ -185,20 +185,21 @@ function goToPerson() {
   }
   else {
 
-    const { data } = useFetch(`${url.url}auth/registration`, {
-      method: 'post',
-      body: {
-        email: email.value,
-        password: pass.value,
-        gender: value2.value,
-        type_user: value.value
-      }
-    })
+
 
     // console.log(url.url)
     // console.log(email.value, pass.value, value.value, value2.value)
     // email.value = pass.value = value.value = value2.value = ''
   }
+  const { data } = useFetch('http://localhost:3001', {
+    method: 'get',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+
+    }
+  })
+  console.log(data)
 
 }
 
