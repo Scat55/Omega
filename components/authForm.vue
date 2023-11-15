@@ -50,7 +50,7 @@
               <label
                 for="email"
                 class="block text-sm font-medium leading-6 text-white"
-              >Email address</label>
+              >Email</label>
               <div class="mt-2">
                 <input
                   id="email"
@@ -88,7 +88,7 @@
               >
                 Войти
               </button>
-              <div class="text-sm">
+              <div class="text-sm  mt-7">
                 <a
                   href="#"
                   class="font-semibold text-indigo-600 hover:text-indigo-500"

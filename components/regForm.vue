@@ -184,23 +184,10 @@ function goToPerson() {
     alert('Выберите пол')
   }
   else {
-
-
-
-    // console.log(url.url)
-    // console.log(email.value, pass.value, value.value, value2.value)
-    // email.value = pass.value = value.value = value2.value = ''
+    console.log(url.url)
+    console.log(email.value, pass.value, value.value, value2.value)
+    email.value = pass.value = value.value = value2.value = ''
   }
-  const { data } = useFetch('http://localhost:3001', {
-    method: 'get',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/json',
-
-    }
-  })
-  console.log(data)
-
 }
 
 function closeModal() {
