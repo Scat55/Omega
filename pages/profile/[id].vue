@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <h1 class="border-b-2 pb-4 text-xl font-bold">Линый кабинет + {{ id }}</h1>
+  <div class="profile">
+    <div class="container">
+      <h1 class=" border-b-2 pb-4 text-xl font-bold">Линый кабинет + {{ id }}</h1>
+
+      <ProfileDetail />
+    </div>
   </div>
 </template>
 
