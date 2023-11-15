@@ -102,29 +102,36 @@ function goToPerson() {
   // body.style.overflow = '';
   // router.push(`/profile/${id}`)
 
-  // const { data } = useFetch(`http://localhost:8070/auth/login`, {
-  //   method: 'post',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: {
-  //     email: email.value,
-  //     password: pass.value,
-  //   }
-  // }).then(res => {
-  //   const token = ref(res.data.value.token)
+  useFetch(`http://localhost:8070/auth/login`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: {
+      email: email.value,
+      password: pass.value,
+    }
+  }).then(res => {
+    let token = ref(res.data.value.token)
 
-  //   useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
-  //     method: 'get',
-  //     headers: {
-  //       Authorization: `Bearer ${token.value}`,
-  //       'Content-Type': 'application/json',
-  //     }
-  //   }).then(res => {
-  //     console.log(res.data)
+    useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
+      method: 'get',
+      headers: {
+        Authorization: `Bearer  ${token}`,
+        'Content-Type': 'application/json',
+      }
+    }).then(res => {
 
-  //   })
-  // })
+      console.log(res.data.value.user_id)
+      const userId = res.data.value.user_id
+      if (typeof window !== 'undefined') {
+        let token = typeof window !== 'undefined' ? localStorage.setItem('userID', userId) : null;
+      }
+      router.push(`profile/${res.data.value.user_id}`)
+      router.push(`profile/${userId}`)
+
+    })
+  })
   // email.value = pass.value = ''
   // modalStore.isVisibleModal = false
 
