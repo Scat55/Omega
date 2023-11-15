@@ -117,7 +117,7 @@ function goToPerson() {
     useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
       method: 'get',
       headers: {
-        Authorization: `Bearer  ${token}`,
+        Authorization: `Bearer  ${token.value}`,
         'Content-Type': 'application/json',
       }
     }).then(res => {
