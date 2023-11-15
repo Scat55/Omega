@@ -73,7 +73,7 @@
                   effect="dark"
                 >
                   <el-option
-                    v-for="item in options"
+                    v-for="item in status"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -89,7 +89,7 @@
                   effect="dark"
                 >
                   <el-option
-                    v-for="item in options2"
+                    v-for="item in gender"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -131,7 +131,7 @@ const pass = ref('')
 const value = ref('')
 const value2 = ref('')
 
-const options = [
+const status = [
   {
     value: 'Ученик',
     label: 'Ученик',
@@ -142,7 +142,7 @@ const options = [
     disabled: false,
   }]
 
-const options2 = [
+const gender = [
   {
     value: 'Мужской',
     label: 'Мужской',
