@@ -1,12 +1,4 @@
 <template>
-  <!--
-    This example requires updating your template:
-
-    ```
-    <html class="h-full bg-gray-100">
-    <body class="h-full">
-    ```
-  -->
   <div class="min-h-full">
     <Disclosure
       as="nav"
@@ -37,7 +29,9 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              <button
+
+              <!-- Иконка уведомлений -->
+              <!-- <button
                 type="button"
                 class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
@@ -47,7 +41,7 @@
                   class="h-6 w-6"
                   aria-hidden="true"
                 />
-              </button>
+              </button> -->
 
               <!-- Profile dropdown -->
               <Menu
@@ -58,13 +52,15 @@
                   <MenuButton
                     class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
-                    <span class="absolute -inset-1.5" />
+                    <span class="text-white">Профиль</span>
+                    <!-- Аватар профиля -->
+                    <!-- <span class="absolute -inset-1.5" />
                     <span class="sr-only">Open user menu</span>
                     <img
                       class="h-8 w-8 rounded-full"
                       :src="user.imageUrl"
                       alt=""
-                    />
+                    /> -->
                   </MenuButton>
                 </div>
                 <transition
