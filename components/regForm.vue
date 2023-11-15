@@ -1,34 +1,15 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <template>
-  <!--
-    This example requires updating your template:
-
-    ```
-    <html class="h-full bg-white">
-    <body class="h-full">
-    ```
-  -->
   <div class="bg">
     <div class="modal">
 
       <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <p
+        <button
           class="text-white close"
+          type="button"
           @click="closeModal"
-        >Закрыть</p>
+        >
+          <i class="material-icons mr-2">close</i>
+        </button>
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             class="mx-auto h-10 w-auto"
@@ -216,8 +197,8 @@ function closeModal() {
 
 .close {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1rem;
+  right: 1rem;
   cursor: pointer;
 }
 </style>
