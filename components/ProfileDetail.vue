@@ -16,7 +16,8 @@
 </template>
 
 <script setup>
-
+const { data } = useFetch('http://localhost:8070/api/user_list')
+console.log(data.value)
 </script>
 
 <style lang="scss" scoped></style>

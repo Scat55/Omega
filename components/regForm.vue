@@ -165,10 +165,23 @@ function goToPerson() {
     alert('Выберите пол')
   }
   else {
-    console.log(url.url)
-    console.log(email.value, pass.value, value.value, value2.value)
+    const { data } = useFetch(`http://localhost:8070/auth/registration`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: {
+        email: email.value,
+        password: pass.value,
+        gender: value2.value,
+        type_user: value.value
+      }
+    })
     email.value = pass.value = value.value = value2.value = ''
+    modalStore.isVisibleReg = false
+    modalStore.isVisibleModal = true
   }
+
 }
 
 function closeModal() {
