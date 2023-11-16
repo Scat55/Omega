@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-
+import axios from 'axios'
 
 let userID;
 let token;
@@ -29,7 +29,14 @@ const { data: user } = await useFetch(`http://localhost:8070/api/user_inf/${user
   }
 })
 
-
+await axios.get(`http://localhost:8070/api/user_inf/${userID}`, {
+  headers: {
+    Authorization: `Bearer  ${token}`,
+    'Content-Type': 'application/json',
+  }
+}).then(res => {
+  console.log(res.data)
+})
 
 definePageMeta({
   layout: 'profile'

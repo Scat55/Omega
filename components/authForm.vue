@@ -90,7 +90,7 @@
 import { useModalStore } from '../stores/ModalStore'
 import { ref } from 'vue'
 const modalStore = useModalStore()
-
+import axios from 'axios'
 const router = useRouter()
 
 
@@ -117,23 +117,31 @@ function goToPerson() {
     if (typeof window !== 'undefined') {
       let localSt = typeof window !== 'undefined' ? localStorage.setItem('userToken', token.value) : null;
     }
-    useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
-      method: 'get',
+    // useFetch(`http://localhost:8070/api/user_id/${email.value}`, {
+    //   method: 'get',
+    //   headers: {
+    //     Authorization: `Bearer  ${token.value}`,
+    //     'Content-Type': 'application/json',
+    //   }
+    // }).then(res => {
+    //   console.log(res.data.value.user_id)
+    //   const userId = res.data.value.user_id
+    //   if (typeof window !== 'undefined') {
+    //     let localSt = typeof window !== 'undefined' ? localStorage.setItem('userID', userId) : null;
+    //   }
+    //   router.push(`profile/${res.data.value.user_id}`)
+    //   router.push(`profile/${userId}`)
+
+    // })
+
+    axios.get(`http://localhost:8070/api/user_id/${email.value}`, {
       headers: {
         Authorization: `Bearer  ${token.value}`,
         'Content-Type': 'application/json',
       }
-    }).then(res => {
-
-      console.log(res.data.value.user_id)
-      const userId = res.data.value.user_id
-      if (typeof window !== 'undefined') {
-        let localSt = typeof window !== 'undefined' ? localStorage.setItem('userID', userId) : null;
-      }
-      router.push(`profile/${res.data.value.user_id}`)
-      router.push(`profile/${userId}`)
-
     })
+  }).then(res => {
+    console.log(res)
   })
   // email.value = pass.value = ''
   // modalStore.isVisibleModal = false
